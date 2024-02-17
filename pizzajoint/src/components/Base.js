@@ -1,33 +1,76 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {motion} from "framer-motion"
+
+const containerVariant = {
+  hidden:{
+    x:'100vw'
+  },
+  visible:{
+    x:0,
+    transition:{
+      delay:0.3,
+      type:'spring',
+      stiffness:120
+    }
+  }
+}
+const nextVariant = {
+  hidden:{
+    x:'-100vw'
+  },
+  visible:{
+    x:0,
+    transition:{
+      type:'spring',
+      stiffness:120
+    }
+  }
+}
 
 const Base = ({ addBase, pizza }) => {
   const bases = ['Classic', 'Thin & Crispy', 'Thick Crust'];
 
   return (
-    <div className="base container">
+    <motion.div className="base container"
+      variants={containerVariant}
+      initial='hidden'
+      animate='visible'
+    >
 
       <h3>Step 1: Choose Your Base</h3>
       <ul>
         {bases.map(base => {
           let spanClass = pizza.base === base ? 'active' : '';
           return (
-            <li key={base} onClick={() => addBase(base)}>
+            <motion.li key={base} onClick={() => addBase(base)}
+              whileHover={{type: 'spring',stiffness: 300, scale: 1.3, color: '#f8e112', originX:0}}
+            >
               <span className={spanClass}>{ base }</span>
-            </li>
+            </motion.li>
           )
         })}
       </ul>
 
       {pizza.base && (
-        <div className="next">
+        <motion.div className="next"
+          variants={nextVariant}
+        >
           <Link to="/toppings">
-            <button>Next</button>
+            <motion.button
+              whileHover={{
+                scale:1.1,
+                textShadow: "0px 0px 8px rgb(255,255,255)",
+                boxShadow: "0px 0px 8px rgb(255,255,255)",
+              }}
+            >
+              Next
+            </motion.button>
           </Link>
-        </div>
+        </motion.div>
       )}
 
-    </div>
+    </motion.div>
   )
 }
 
