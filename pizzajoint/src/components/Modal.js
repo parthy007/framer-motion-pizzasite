@@ -1,9 +1,22 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-const modalVariants = {
+const backdropVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
+};
+
+const modalVariants = {
+  hidden: {
+    y: "-100vh",
+    opacity: 0,
+  },
+  visible: {
+    y: "200px",
+    opacity: 1,
+    transition: { delay: 0.5 },
+  },
 };
 
 const Modal = ({ showModal, setShowModal }) => {
@@ -12,10 +25,18 @@ const Modal = ({ showModal, setShowModal }) => {
       {showModal && (
         <motion.div
           className="backdrop"
-          variants={modalVariants}
+          variants={backdropVariants}
           initial="hidden"
           animate="visible"
-        ></motion.div>
+          exit="hidden"
+        >
+          <motion.div className="modal" variants={modalVariants}>
+            <p>Want to make another pizza?</p>
+            <Link to="/">
+              <button>Start Again</button>
+            </Link>
+          </motion.div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
